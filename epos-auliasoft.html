@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-POS AULIASOFT — Sistem Kasir Online untuk UMKM</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,800;1,9..144,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #1a1a2e;
+  --accent: #e84393;
+  --accent2: #f7a325;
+  --accent3: #00c9a7;
+  --bg: #f8f5f0;
+  --white: #ffffff;
+  --text: #1a1a2e;
+  --text-muted: #6b7280;
+  --surface: #ffffff;
+  --border: #e5e7eb;
+  --card-shadow: 0 4px 24px rgba(26,26,46,0.08);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: rgba(248,245,240,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo {
+  font-family: 'Fraunces', serif;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--primary);
+  text-decoration: none;
+  letter-spacing: -0.5px;
+}
+.nav-logo span { color: var(--accent); }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a {
+  text-decoration: none; font-size: 0.875rem; font-weight: 500;
+  color: var(--text-muted); transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--accent); }
+.nav-cta {
+  background: var(--accent); color: #fff; border: none;
+  padding: 0.5rem 1.25rem; border-radius: 100px;
+  font-size: 0.875rem; font-weight: 600; cursor: pointer;
+  text-decoration: none; transition: all 0.2s;
+}
+.nav-cta:hover { background: #c2185b; transform: translateY(-1px); }
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+.hamburger span { display: block; width: 24px; height: 2px; background: var(--text); transition: 0.3s; }
+.mobile-menu {
+  display: none; position: fixed; top: 64px; left: 0; right: 0; z-index: 999;
+  background: var(--bg); border-bottom: 1px solid var(--border);
+  padding: 1rem 2rem; flex-direction: column; gap: 1rem;
+}
+.mobile-menu a {
+  text-decoration: none; font-size: 1rem; font-weight: 500;
+  color: var(--text); padding: 0.5rem 0; border-bottom: 1px solid var(--border);
+}
+.mobile-menu.open { display: flex; }
+
+/* SECTIONS */
+section { padding: 5rem 2rem; }
+.container { max-width: 1100px; margin: 0 auto; }
+.section-tag {
+  display: inline-block;
+  background: rgba(232,67,147,0.1); color: var(--accent);
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; padding: 0.35rem 0.9rem; border-radius: 100px;
+  margin-bottom: 1rem;
+}
+.section-title {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 800; line-height: 1.15;
+  letter-spacing: -0.5px; margin-bottom: 1rem;
+}
+.section-subtitle {
+  font-size: 1.05rem; color: var(--text-muted);
+  line-height: 1.7; max-width: 580px;
+}
+
+/* HERO */
+#home {
+  min-height: 100vh;
+  display: flex; align-items: center;
+  padding-top: 64px;
+  background: var(--primary);
+  position: relative; overflow: hidden;
+}
+.hero-bg-shape {
+  position: absolute; top: -100px; right: -150px;
+  width: 600px; height: 600px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(232,67,147,0.25) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-bg-shape2 {
+  position: absolute; bottom: -80px; left: -100px;
+  width: 400px; height: 400px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,201,167,0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 4rem; align-items: center;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: rgba(232,67,147,0.15); border: 1px solid rgba(232,67,147,0.3);
+  color: #f48fb1; font-size: 0.8rem; font-weight: 600;
+  padding: 0.4rem 1rem; border-radius: 100px; margin-bottom: 1.5rem;
+}
+.hero-badge::before { content: '●'; color: var(--accent); font-size: 0.6rem; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.hero-title {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(2.5rem, 5vw, 3.8rem);
+  font-weight: 800; line-height: 1.1;
+  letter-spacing: -1px; color: #fff; margin-bottom: 1.5rem;
+}
+.hero-title .highlight { color: var(--accent); font-style: italic; }
+.hero-desc { color: #9ca3af; font-size: 1.05rem; line-height: 1.7; margin-bottom: 2rem; }
+.hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+.btn-primary {
+  background: var(--accent); color: #fff; border: none;
+  padding: 0.875rem 1.75rem; border-radius: 100px;
+  font-size: 0.95rem; font-weight: 700; cursor: pointer;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;
+  transition: all 0.25s; box-shadow: 0 4px 20px rgba(232,67,147,0.4);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(232,67,147,0.5); }
+.btn-secondary {
+  background: transparent; color: #fff;
+  border: 1px solid rgba(255,255,255,0.25);
+  padding: 0.875rem 1.75rem; border-radius: 100px;
+  font-size: 0.95rem; font-weight: 600; cursor: pointer;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;
+  transition: all 0.25s;
+}
+.btn-secondary:hover { border-color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.05); }
+.hero-stats { display: flex; gap: 2rem; margin-top: 2.5rem; }
+.hero-stat { }
+.hero-stat-num { font-family: 'Fraunces', serif; font-size: 1.8rem; font-weight: 800; color: #fff; }
+.hero-stat-label { font-size: 0.8rem; color: #6b7280; margin-top: 0.1rem; }
+.hero-visual {
+  position: relative;
+}
+.hero-card {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  backdrop-filter: blur(16px);
+  border-radius: 20px;
+  padding: 2rem;
+  position: relative;
+}
+.hero-card-title { color: #9ca3af; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 1.25rem; }
+.mock-chart { display: flex; align-items: flex-end; gap: 8px; height: 100px; margin-bottom: 1.5rem; }
+.mock-bar {
+  flex: 1; background: rgba(232,67,147,0.3); border-radius: 6px 6px 0 0;
+  position: relative; transition: all 0.3s;
+  animation: barGrow 1s ease-out forwards;
+}
+.mock-bar.active { background: var(--accent); }
+@keyframes barGrow { from{transform:scaleY(0);transform-origin:bottom} to{transform:scaleY(1);transform-origin:bottom} }
+.mock-bar:nth-child(1){height:45%;animation-delay:0.1s}
+.mock-bar:nth-child(2){height:70%;animation-delay:0.15s}
+.mock-bar:nth-child(3){height:55%;animation-delay:0.2s}
+.mock-bar:nth-child(4){height:85%;animation-delay:0.25s}
+.mock-bar:nth-child(5){height:65%;animation-delay:0.3s}
+.mock-bar:nth-child(6){height:95%;animation-delay:0.35s;background:var(--accent)}
+.mock-bar:nth-child(7){height:75%;animation-delay:0.4s}
+.mock-metric { display: flex; justify-content: space-between; }
+.mock-metric-item { }
+.mock-metric-val { font-family: 'Fraunces', serif; font-size: 1.5rem; font-weight: 700; color: #fff; }
+.mock-metric-label { font-size: 0.75rem; color: #6b7280; }
+.floating-badge {
+  position: absolute; background: var(--accent2);
+  color: var(--primary); font-size: 0.75rem; font-weight: 700;
+  padding: 0.4rem 0.85rem; border-radius: 100px;
+  animation: float 3s ease-in-out infinite;
+}
+.floating-badge.top { top: -12px; right: 2rem; }
+.floating-badge.bottom { bottom: -12px; left: 2rem; background: var(--accent3); }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+
+/* PRODUCT KNOWLEDGE NAV */
+.pk-tabs {
+  display: flex; overflow-x: auto; gap: 0.75rem;
+  padding-bottom: 0.5rem; margin-bottom: 3rem;
+  scrollbar-width: none;
+}
+.pk-tabs::-webkit-scrollbar { display: none; }
+.pk-tab {
+  flex-shrink: 0;
+  padding: 0.6rem 1.25rem; border-radius: 100px;
+  font-size: 0.85rem; font-weight: 600; cursor: pointer;
+  border: 1.5px solid var(--border); background: var(--white);
+  color: var(--text-muted); transition: all 0.2s;
+}
+.pk-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.pk-tab:hover:not(.active) { border-color: var(--accent); color: var(--accent); }
+
+/* CARDS */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+.grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 1.25rem; }
+
+.card {
+  background: var(--white); border-radius: 16px;
+  padding: 1.75rem; border: 1px solid var(--border);
+  box-shadow: var(--card-shadow); transition: all 0.25s;
+}
+.card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(26,26,46,0.12); }
+.card-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem; margin-bottom: 1rem;
+}
+.card-title { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+.card-desc { font-size: 0.875rem; color: var(--text-muted); line-height: 1.6; }
+
+/* FEATURES */
+#features { background: var(--white); }
+.feature-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.25rem; margin-top: 3rem; }
+.feature-card {
+  background: var(--bg); border-radius: 16px; padding: 1.75rem;
+  border: 1.5px solid transparent; transition: all 0.25s;
+  position: relative; overflow: hidden;
+}
+.feature-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transform: scaleX(0); transform-origin: left; transition: transform 0.3s;
+}
+.feature-card:hover::before { transform: scaleX(1); }
+.feature-card:hover { border-color: rgba(232,67,147,0.2); background: #fff; box-shadow: var(--card-shadow); }
+.feature-icon { font-size: 2rem; margin-bottom: 1rem; }
+.feature-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.4rem; }
+.feature-desc { font-size: 0.825rem; color: var(--text-muted); line-height: 1.6; }
+
+/* TARGET AUDIENCE */
+#audience { background: var(--primary); color: #fff; }
+#audience .section-title { color: #fff; }
+#audience .section-subtitle { color: #9ca3af; }
+.audience-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.25rem; margin-top: 3rem; }
+.audience-card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px; padding: 1.75rem; transition: all 0.25s;
+}
+.audience-card:hover { background: rgba(232,67,147,0.1); border-color: rgba(232,67,147,0.3); }
+.audience-emoji { font-size: 2.5rem; margin-bottom: 1rem; }
+.audience-title { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; color: #fff; }
+.audience-desc { font-size: 0.85rem; color: #9ca3af; line-height: 1.6; }
+
+/* BIDANG SISTEM */
+.domain-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; margin-top: 3rem; }
+.domain-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1.25rem; text-align: center; transition: all 0.25s;
+}
+.domain-card:hover { border-color: var(--accent); box-shadow: 0 4px 20px rgba(232,67,147,0.1); }
+.domain-icon { font-size: 1.75rem; margin-bottom: 0.5rem; }
+.domain-title { font-size: 0.85rem; font-weight: 700; }
+
+/* USE CASES */
+#usecase { background: var(--white); }
+.usecase-list { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-top: 3rem; }
+.usecase-item {
+  display: flex; gap: 1rem; align-items: flex-start;
+  background: var(--bg); border-radius: 14px; padding: 1.5rem;
+  border: 1px solid var(--border); transition: all 0.25s;
+}
+.usecase-item:hover { border-color: var(--accent3); box-shadow: 0 4px 20px rgba(0,201,167,0.1); }
+.usecase-num {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: var(--accent); color: #fff; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.85rem; font-weight: 800;
+}
+.usecase-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.35rem; }
+.usecase-desc { font-size: 0.825rem; color: var(--text-muted); line-height: 1.6; }
+
+/* PRICING */
+#pricing { background: var(--bg); }
+.pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 760px; margin: 3rem auto 0; }
+.pricing-card {
+  background: var(--white); border-radius: 20px; padding: 2.5rem;
+  border: 1.5px solid var(--border); position: relative;
+  transition: all 0.25s; box-shadow: var(--card-shadow);
+}
+.pricing-card.featured {
+  border-color: var(--accent);
+  box-shadow: 0 8px 40px rgba(232,67,147,0.15);
+  transform: scale(1.02);
+}
+.pricing-badge {
+  position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+  background: var(--accent); color: #fff; font-size: 0.75rem; font-weight: 700;
+  padding: 0.3rem 1rem; border-radius: 100px; white-space: nowrap;
+}
+.pricing-plan { font-size: 0.8rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem; }
+.pricing-name { font-family: 'Fraunces', serif; font-size: 1.8rem; font-weight: 800; margin-bottom: 1rem; }
+.pricing-price { margin-bottom: 1.5rem; }
+.pricing-amount { font-family: 'Fraunces', serif; font-size: 2.5rem; font-weight: 800; color: var(--accent); }
+.pricing-period { font-size: 0.875rem; color: var(--text-muted); }
+.pricing-desc { font-size: 0.875rem; color: var(--text-muted); margin-bottom: 1.5rem; line-height: 1.6; }
+.pricing-features { list-style: none; margin-bottom: 2rem; }
+.pricing-features li {
+  display: flex; align-items: flex-start; gap: 0.6rem;
+  font-size: 0.875rem; padding: 0.5rem 0; border-bottom: 1px solid var(--border);
+}
+.pricing-features li:last-child { border-bottom: none; }
+.pricing-features li::before { content: '✓'; color: var(--accent3); font-weight: 800; flex-shrink: 0; }
+.pricing-btn {
+  display: block; text-align: center; width: 100%;
+  padding: 0.875rem; border-radius: 100px;
+  font-size: 0.95rem; font-weight: 700; cursor: pointer;
+  text-decoration: none; transition: all 0.25s;
+}
+.pricing-btn.outline {
+  border: 2px solid var(--accent); color: var(--accent); background: transparent;
+}
+.pricing-btn.outline:hover { background: var(--accent); color: #fff; }
+.pricing-btn.filled { background: var(--accent); color: #fff; border: none; box-shadow: 0 4px 20px rgba(232,67,147,0.3); }
+.pricing-btn.filled:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(232,67,147,0.4); }
+
+/* MORE (keunggulan, etc) */
+#more { background: var(--primary); color: #fff; }
+#more .section-title { color: #fff; }
+#more .section-subtitle { color: #9ca3af; }
+
+.more-tabs { display: flex; gap: 0.75rem; margin-bottom: 3rem; flex-wrap: wrap; }
+.more-tab {
+  padding: 0.6rem 1.25rem; border-radius: 100px; cursor: pointer;
+  font-size: 0.85rem; font-weight: 600;
+  border: 1px solid rgba(255,255,255,0.15); color: #9ca3af;
+  background: rgba(255,255,255,0.04); transition: all 0.2s;
+}
+.more-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.more-tab:hover:not(.active) { color: #fff; border-color: rgba(255,255,255,0.4); }
+
+.more-panel { display: none; }
+.more-panel.active { display: block; animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+.advantage-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.25rem; }
+.advantage-card {
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px; padding: 1.75rem; transition: all 0.25s;
+}
+.advantage-card:hover { background: rgba(232,67,147,0.08); border-color: rgba(232,67,147,0.25); }
+.advantage-icon { font-size: 2rem; margin-bottom: 1rem; }
+.advantage-title { font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; }
+.advantage-desc { font-size: 0.85rem; color: #9ca3af; line-height: 1.6; }
+
+.product-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.25rem; }
+.product-item {
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 14px; padding: 1.5rem; transition: all 0.25s;
+}
+.product-item:hover { background: rgba(247,163,37,0.1); border-color: rgba(247,163,37,0.3); }
+.product-item-icon { font-size: 1.75rem; margin-bottom: 0.75rem; }
+.product-item-name { font-size: 0.95rem; font-weight: 700; color: #fff; margin-bottom: 0.35rem; }
+.product-item-desc { font-size: 0.825rem; color: #9ca3af; line-height: 1.5; }
+.product-item-badge {
+  display: inline-block; margin-top: 0.5rem;
+  background: rgba(247,163,37,0.2); color: var(--accent2);
+  font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 6px;
+}
+
+.faq-list { display: flex; flex-direction: column; gap: 1px; }
+.faq-item {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px; overflow: hidden; margin-bottom: 0.5rem;
+}
+.faq-q {
+  padding: 1.25rem 1.5rem; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 0.95rem; font-weight: 600; color: #fff;
+  transition: background 0.2s;
+}
+.faq-q:hover { background: rgba(255,255,255,0.04); }
+.faq-q::after { content: '+'; font-size: 1.2rem; color: var(--accent); transition: transform 0.25s; flex-shrink: 0; }
+.faq-item.open .faq-q::after { transform: rotate(45deg); }
+.faq-a {
+  max-height: 0; overflow: hidden; transition: max-height 0.35s ease;
+  padding: 0 1.5rem; color: #9ca3af; font-size: 0.875rem; line-height: 1.7;
+}
+.faq-item.open .faq-a { max-height: 300px; padding: 0 1.5rem 1.25rem; }
+
+.process-steps { display: flex; flex-direction: column; gap: 1.25rem; }
+.process-step {
+  display: flex; gap: 1.5rem; align-items: flex-start;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 14px; padding: 1.5rem;
+}
+.step-num {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--accent); color: #fff; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 0.9rem;
+}
+.step-content-title { font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 0.35rem; }
+.step-content-desc { font-size: 0.875rem; color: #9ca3af; line-height: 1.6; }
+
+.roadmap-timeline { display: flex; flex-direction: column; gap: 1.25rem; }
+.roadmap-item {
+  display: flex; gap: 1.5rem;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 14px; padding: 1.5rem; position: relative;
+}
+.roadmap-quarter {
+  font-family: 'Fraunces', serif; font-size: 1.1rem; font-weight: 700;
+  color: var(--accent); min-width: 80px; flex-shrink: 0;
+}
+.roadmap-title { font-size: 0.95rem; font-weight: 700; color: #fff; margin-bottom: 0.35rem; }
+.roadmap-desc { font-size: 0.85rem; color: #9ca3af; line-height: 1.5; }
+.roadmap-status {
+  display: inline-block; font-size: 0.7rem; font-weight: 700;
+  padding: 0.2rem 0.6rem; border-radius: 6px; margin-left: 0.5rem;
+}
+.roadmap-status.done { background: rgba(0,201,167,0.2); color: var(--accent3); }
+.roadmap-status.progress { background: rgba(247,163,37,0.2); color: var(--accent2); }
+.roadmap-status.planned { background: rgba(255,255,255,0.1); color: #6b7280; }
+
+.testi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.25rem; }
+.testi-card {
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px; padding: 1.75rem; transition: all 0.25s;
+}
+.testi-card:hover { background: rgba(255,255,255,0.09); }
+.testi-stars { color: var(--accent2); font-size: 0.9rem; margin-bottom: 0.75rem; }
+.testi-text { font-size: 0.9rem; color: #d1d5db; line-height: 1.7; margin-bottom: 1.25rem; font-style: italic; }
+.testi-author { display: flex; align-items: center; gap: 0.75rem; }
+.testi-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-weight: 800; font-size: 0.9rem;
+}
+.testi-name { font-size: 0.875rem; font-weight: 700; color: #fff; }
+.testi-role { font-size: 0.775rem; color: #6b7280; }
+
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+.contact-info { }
+.contact-item { display: flex; gap: 1rem; margin-bottom: 1.5rem; align-items: flex-start; }
+.contact-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  background: rgba(232,67,147,0.15); color: var(--accent);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; flex-shrink: 0;
+}
+.contact-label { font-size: 0.8rem; color: #6b7280; margin-bottom: 0.25rem; }
+.contact-value { font-size: 0.95rem; font-weight: 600; color: #fff; }
+.contact-form-card {
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px; padding: 2rem;
+}
+.form-group { margin-bottom: 1.25rem; }
+.form-label { display: block; font-size: 0.8rem; font-weight: 600; color: #9ca3af; margin-bottom: 0.5rem; }
+.form-input, .form-textarea {
+  width: 100%; background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.15); border-radius: 10px;
+  padding: 0.75rem 1rem; color: #fff; font-family: inherit; font-size: 0.9rem;
+  outline: none; transition: border-color 0.2s;
+}
+.form-input:focus, .form-textarea:focus { border-color: var(--accent); }
+.form-input::placeholder, .form-textarea::placeholder { color: #4b5563; }
+.form-textarea { resize: vertical; min-height: 100px; }
+
+/* FOOTER */
+footer {
+  background: #0d0d1a; color: #6b7280;
+  padding: 3rem 2rem; text-align: center;
+}
+.footer-logo {
+  font-family: 'Fraunces', serif; font-size: 1.6rem; font-weight: 800;
+  color: #fff; margin-bottom: 0.75rem;
+}
+.footer-logo span { color: var(--accent); }
+.footer-text { font-size: 0.875rem; line-height: 1.6; margin-bottom: 1.5rem; }
+.footer-links { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+.footer-links a { color: #6b7280; text-decoration: none; font-size: 0.875rem; transition: color 0.2s; }
+.footer-links a:hover { color: var(--accent); }
+.footer-copy { font-size: 0.8rem; border-top: 1px solid rgba(255,255,255,0.07); padding-top: 1.5rem; }
+
+/* KNOWLEDGE SECTION */
+#knowledge { background: var(--bg); }
+.knowledge-intro { max-width: 580px; margin-bottom: 3rem; }
+.pk-panel { display: none; }
+.pk-panel.active { display: block; animation: fadeIn 0.3s ease; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .hero-grid, .grid-2, .contact-grid { grid-template-columns: 1fr; }
+  .grid-3, .feature-grid, .audience-grid, .testi-grid, .advantage-grid, .product-grid { grid-template-columns: 1fr 1fr; }
+  .grid-4, .domain-grid { grid-template-columns: repeat(2,1fr); }
+  .pricing-grid { grid-template-columns: 1fr; max-width: 400px; }
+  .pricing-card.featured { transform: none; }
+  .hero-visual { display: none; }
+  .nav-links, .nav-cta { display: none; }
+  .hamburger { display: flex; }
+  .usecase-list { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .grid-3, .feature-grid, .audience-grid, .testi-grid, .advantage-grid, .product-grid { grid-template-columns: 1fr; }
+  .grid-4, .domain-grid { grid-template-columns: repeat(2,1fr); }
+  section { padding: 3.5rem 1.25rem; }
+  .hero-stats { gap: 1.25rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#home" class="nav-logo">E-POS <span>AULIA</span>SOFT</a>
+  <ul class="nav-links">
+    <li><a href="#home">Beranda</a></li>
+    <li><a href="#knowledge">Produk</a></li>
+    <li><a href="#features">Fitur</a></li>
+    <li><a href="#usecase">Use Case</a></li>
+    <li><a href="#pricing">Paket</a></li>
+    <li><a href="#more">More</a></li>
+  </ul>
+  <a href="https://wa.me/6281241945881" target="_blank" class="nav-cta">Pesan Sekarang</a>
+  <div class="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#home" onclick="toggleMenu()">Beranda</a>
+  <a href="#knowledge" onclick="toggleMenu()">Produk</a>
+  <a href="#features" onclick="toggleMenu()">Fitur</a>
+  <a href="#usecase" onclick="toggleMenu()">Use Case</a>
+  <a href="#pricing" onclick="toggleMenu()">Paket</a>
+  <a href="#more" onclick="toggleMenu()">More</a>
+</div>
+
+<!-- HERO / HOME -->
+<section id="home">
+  <div class="hero-bg-shape"></div>
+  <div class="hero-bg-shape2"></div>
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-left">
+        <div class="hero-badge">🚀 Sistem Kasir Online #1 untuk UMKM Indonesia</div>
+        <h1 class="hero-title">
+          Kelola Bisnis Makin <span class="highlight">Mudah & Cepat</span> dengan E-POS
+        </h1>
+        <p class="hero-desc">
+          E-POS AULIASOFT adalah platform kasir online berbasis web yang mengintegrasikan penjualan, inventori, laporan keuangan, dan CRM — semua dalam satu sistem yang bisa diakses dari mana saja.
+        </p>
+        <div class="hero-actions">
+          <a href="https://wa.me/6281241945881" target="_blank" class="btn-primary">Coba Gratis Sekarang →</a>
+          <a href="#features" class="btn-secondary">Lihat Fitur</a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="hero-stat-num">50+</div>
+            <div class="hero-stat-label">Jenis Bisnis Didukung</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-num">3</div>
+            <div class="hero-stat-label">Paket Fleksibel</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-num">24/7</div>
+            <div class="hero-stat-label">Support Online</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-card">
+          <div class="floating-badge top">⚡ Real-time Sync</div>
+          <div class="hero-card-title">Laporan Penjualan Hari Ini</div>
+          <div class="mock-chart">
+            <div class="mock-bar"></div>
+            <div class="mock-bar"></div>
+            <div class="mock-bar"></div>
+            <div class="mock-bar"></div>
+            <div class="mock-bar"></div>
+            <div class="mock-bar active"></div>
+            <div class="mock-bar"></div>
+          </div>
+          <div class="mock-metric">
+            <div class="mock-metric-item">
+              <div class="mock-metric-val">Rp 4,2 Jt</div>
+              <div class="mock-metric-label">Omzet Hari Ini</div>
+            </div>
+            <div class="mock-metric-item">
+              <div class="mock-metric-val">128</div>
+              <div class="mock-metric-label">Transaksi</div>
+            </div>
+            <div class="mock-metric-item">
+              <div class="mock-metric-val">↑ 23%</div>
+              <div class="mock-metric-label">vs Kemarin</div>
+            </div>
+          </div>
+          <div class="floating-badge bottom">✓ Multi-Outlet Ready</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TARGET AUDIENCE & BIDANG -->
+<section id="audience">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:0.5rem">
+      <span class="section-tag" style="background:rgba(0,201,167,0.15);color:var(--accent3)">Target Pengguna</span>
+    </div>
+    <h2 class="section-title" style="text-align:center">Untuk Siapa E-POS AULIASOFT?</h2>
+    <p class="section-subtitle" style="margin:0 auto 0;text-align:center">
+      Dirancang khusus untuk pelaku usaha dari skala kecil hingga menengah yang ingin naik kelas dengan teknologi digital.
+    </p>
+    <div class="audience-grid">
+      <div class="audience-card">
+        <div class="audience-emoji">🛒</div>
+        <div class="audience-title">Pemilik Toko & Warung</div>
+        <div class="audience-desc">Warung kelontong, minimarket, toko sembako, toko fashion, dan berbagai jenis retail yang ingin mencatat penjualan dengan mudah.</div>
+      </div>
+      <div class="audience-card">
+        <div class="audience-emoji">☕</div>
+        <div class="audience-title">Pelaku F&B & Kafe</div>
+        <div class="audience-desc">Warung makan, kafe, bakso, ayam goreng, jus, dan usaha kuliner yang membutuhkan manajemen menu dan pesanan secara digital.</div>
+      </div>
+      <div class="audience-card">
+        <div class="audience-emoji">💼</div>
+        <div class="audience-title">UMKM & Pengusaha</div>
+        <div class="audience-desc">Pelaku UMKM di berbagai sektor yang ingin mengelola keuangan, inventori, dan laporan bisnis secara terintegrasi.</div>
+      </div>
+      <div class="audience-card">
+        <div class="audience-emoji">🔧</div>
+        <div class="audience-title">Bengkel & Jasa</div>
+        <div class="audience-desc">Bengkel motor/mobil, laundry, salon, percetakan, dan usaha jasa lainnya yang memerlukan manajemen transaksi dan pelanggan.</div>
+      </div>
+      <div class="audience-card">
+        <div class="audience-emoji">🏪</div>
+        <div class="audience-title">Toko Spesialis</div>
+        <div class="audience-desc">Counter HP, optik, elektronik, spare part, petshop, stationery, dan toko-toko dengan kebutuhan inventori spesifik.</div>
+      </div>
+      <div class="audience-card">
+        <div class="audience-emoji">🌾</div>
+        <div class="audience-title">Usaha Pertanian & Distribusi</div>
+        <div class="audience-desc">Toko obat tanaman, bibit, pakan ikan, distributor, dan usaha agribisnis yang membutuhkan sistem stok dan penjualan.</div>
+      </div>
+    </div>
+    <div style="margin-top:3.5rem">
+      <div style="text-align:center;margin-bottom:1rem">
+        <span class="section-tag" style="background:rgba(247,163,37,0.15);color:var(--accent2)">Bidang Sistem</span>
+        <h3 style="font-family:'Fraunces',serif;font-size:1.8rem;font-weight:700;color:#fff;margin-top:0.5rem">Cakupan Bidang Usaha E-POS</h3>
+      </div>
+      <div class="domain-grid">
+        <div class="domain-card" style="background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.1)">
+          <div class="domain-icon">🛍️</div>
+          <div class="domain-title" style="color:#fff">Retail & Toko</div>
+        </div>
+        <div class="domain-card" style="background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.1)">
+          <div class="domain-icon">🍽️</div>
+          <div class="domain-title" style="color:#fff">Food & Beverage</div>
+        </div>
+        <div class="domain-card" style="background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.1)">
+          <div class="domain-icon">⚙️</div>
+          <div class="domain-title" style="color:#fff">Jasa & Bengkel</div>
+        </div>
+        <div class="domain-card" style="background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.1)">
+          <div class="domain-icon">💻</div>
+          <div class="domain-title" style="color:#fff">Teknologi & Elektronik</div>
+        </div>
+        <div class="domain-card" style="background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.1)">
+          <div class="domain-icon">🌿</div>
+          <div class="domain-title" style="color:#fff">Agribisnis</div>
+        </div>
+        <div class="domain-card" style="background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.1)">
+          <div class="domain-icon">👗</div>
+          <div class="domain-title" style="color:#fff">Fashion & Aksesoris</div>
+        </div>
+        <div class="domain-card" style="background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.1)">
+          <div class="domain-icon">🏗️</div>
+          <div class="domain-title" style="color:#fff">Bangunan & Material</div>
+        </div>
+        <div class="domain-card" style="background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.1)">
+          <div class="domain-icon">📦</div>
+          <div class="domain-title" style="color:#fff">Distribusi & Logistik</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCT KNOWLEDGE (12 jenis) -->
+<section id="knowledge">
+  <div class="container">
+    <span class="section-tag">Product Knowledge</span>
+    <h2 class="section-title">Kenali E-POS AULIASOFT<br>Secara Menyeluruh</h2>
+    <p class="section-subtitle" style="margin-bottom:2.5rem">12 aspek penting yang perlu Anda ketahui tentang produk E-POS AULIASOFT sebelum mulai menggunakannya.</p>
+
+    <div class="pk-tabs" id="pkTabs">
+      <div class="pk-tab active" onclick="switchPK(this,'pk1')">💡 Fitur Produk</div>
+      <div class="pk-tab" onclick="switchPK(this,'pk2')">💰 Harga</div>
+      <div class="pk-tab" onclick="switchPK(this,'pk3')">🏷️ Brand</div>
+      <div class="pk-tab" onclick="switchPK(this,'pk4')">🏢 Business Domain</div>
+      <div class="pk-tab" onclick="switchPK(this,'pk5')">👥 Target Audience</div>
+      <div class="pk-tab" onclick="switchPK(this,'pk6')">⚙️ Kustomisasi</div>
+      <div class="pk-tab" onclick="switchPK(this,'pk7')">📋 FAQ</div>
+      <div class="pk-tab" onclick="switchPK(this,'pk8')">🗺️ Roadmap</div>
+      <div class="pk-tab" onclick="switchPK(this,'pk9')">🏆 Kompetitor</div>
+      <div class="pk-tab" onclick="switchPK(this,'pk10')">🔗 Produk Pendukung</div>
+      <div class="pk-tab" onclick="switchPK(this,'pk11')">💼 Use Cases</div>
+      <div class="pk-tab" onclick="switchPK(this,'pk12')">📜 Proses & Kebijakan</div>
+    </div>
+
+    <!-- PK1: Fitur Produk -->
+    <div class="pk-panel active" id="pk1">
+      <div class="feature-grid">
+        <div class="feature-card"><div class="feature-icon">🧾</div><div class="feature-title">Aplikasi Kasir Online</div><div class="feature-desc">Proses transaksi penjualan secara cepat dan akurat. Mendukung atur meja (F&B), multisatuan, reservasi, serial number, dan mode grosir.</div></div>
+        <div class="feature-card"><div class="feature-icon">🛒</div><div class="feature-title">Toko Online Terintegrasi</div><div class="feature-desc">Jualan online langsung dari sistem. Terhubung dengan marketplace seperti Shopee, Tokopedia, Grabmart, dan domain sendiri.</div></div>
+        <div class="feature-card"><div class="feature-icon">📦</div><div class="feature-title">Manajemen Inventori</div><div class="feature-desc">Kelola stok real-time, COGS average, transfer stok antar outlet, produksi stok, serial & batch number, dan permintaan barang.</div></div>
+        <div class="feature-card"><div class="feature-icon">👤</div><div class="feature-title">CRM Pelanggan</div><div class="feature-desc">Kelola data pelanggan, deposit pelanggan, riwayat pembelian, dan program loyalitas untuk meningkatkan retensi.</div></div>
+        <div class="feature-card"><div class="feature-icon">📊</div><div class="feature-title">Laporan & Analisa Bisnis</div><div class="feature-desc">Laporan penjualan, laporan stok, analisa bisnis mendalam, dan laporan akuntansi lengkap dengan CoA dan auto posting.</div></div>
+        <div class="feature-card"><div class="feature-icon">👨‍💼</div><div class="feature-title">Manajemen Karyawan</div><div class="feature-desc">Absensi foto, otorisasi advance, data karyawan, shift management, struktur gaji, penggajian, dan integrasi rekening bank.</div></div>
+        <div class="feature-card"><div class="feature-icon">💳</div><div class="feature-title">Digital Payment</div><div class="feature-desc">QRIS Dynamic, EDC (Kartu Debit/Kredit), Struk Digital via WhatsApp, SMS, dan Email untuk pengalaman bayar modern.</div></div>
+        <div class="feature-card"><div class="feature-icon">📱</div><div class="feature-title">Aplikasi Owner</div><div class="feature-desc">Pantau bisnis dari ponsel kapan saja dan di mana saja. Lihat laporan, monitoring stok, dan performa karyawan secara real-time.</div></div>
+        <div class="feature-card"><div class="feature-icon">🌐</div><div class="feature-title">Order Online</div><div class="feature-desc">QR E-menu, Weborder, integrasi Grabfood dan Gofood untuk memperluas jangkauan penjualan.</div></div>
+      </div>
+    </div>
+
+    <!-- PK2: Harga -->
+    <div class="pk-panel" id="pk2">
+      <div class="grid-3">
+        <div class="card" style="border-top: 3px solid var(--accent3)">
+          <div class="card-icon" style="background:rgba(0,201,167,0.1);color:var(--accent3)">🌱</div>
+          <div class="card-title">Paket Basic</div>
+          <div style="font-family:'Fraunces',serif;font-size:2rem;font-weight:800;color:var(--accent);margin:0.5rem 0">Rp 149.999</div>
+          <div class="card-desc">Cocok untuk usaha baru. Single outlet, kasir online, inventori dasar, CRM, laporan, dan QRIS. Harga terjangkau untuk mulai digital.</div>
+        </div>
+        <div class="card" style="border-top: 3px solid var(--accent)">
+          <div class="card-icon" style="background:rgba(232,67,147,0.1);color:var(--accent)">⭐</div>
+          <div class="card-title">Paket Basic Plus (Standard)</div>
+          <div style="font-family:'Fraunces',serif;font-size:2rem;font-weight:800;color:var(--accent);margin:0.5rem 0">Rp 349.999</div>
+          <div class="card-desc">Multi outlet, akuntansi lengkap, QRIS Dynamic, EDC, deposit pelanggan, analisa bisnis, dan absensi foto karyawan.</div>
+        </div>
+        <div class="card" style="border-top: 3px solid var(--accent2)">
+          <div class="card-icon" style="background:rgba(247,163,37,0.1);color:var(--accent2)">🚀</div>
+          <div class="card-title">Paket Premium</div>
+          <div style="font-family:'Fraunces',serif;font-size:2rem;font-weight:800;color:var(--accent);margin:0.5rem 0">Rp 749.999</div>
+          <div class="card-desc">Fitur lengkap + Payroll, Omnichannel marketplace, serial/batch number, pengiriman, Aulia Teams, dan semua integrasi.</div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:1.5rem;background:rgba(232,67,147,0.05);border-color:rgba(232,67,147,0.2)">
+        <div style="font-weight:700;margin-bottom:0.5rem">💡 Catatan Harga</div>
+        <div class="card-desc">Semua harga merupakan biaya berlangganan sistem. Garansi aplikasi selama 1,5 tahun. Support online & WhatsApp 24/7. Pemesanan mudah dan aman via WhatsApp ke <strong>0812-4194-5881</strong>.</div>
+      </div>
+    </div>
+
+    <!-- PK3: Brand -->
+    <div class="pk-panel" id="pk3">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-icon" style="background:rgba(232,67,147,0.1);font-size:1.8rem">☀️</div>
+          <div class="card-title">Tentang Brand AULIASOFT</div>
+          <div class="card-desc">PT AuliaSoft adalah perusahaan teknologi digital Indonesia yang berkomitmen menghadirkan solusi software terjangkau dan berkualitas untuk UMKM, koperasi, dan lembaga keuangan mikro. Tagline: <em>"Jalankan Bisnis Tanpa Ribet dengan AuliaSoft Digital"</em>.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon" style="background:rgba(0,201,167,0.1);font-size:1.8rem">🎯</div>
+          <div class="card-title">Nilai & Visi Brand</div>
+          <div class="card-desc">AuliaSoft percaya bahwa teknologi harus bisa diakses semua kalangan. E-POS hadir dengan harga terjangkau tanpa mengorbankan kualitas fitur. Garansi nyata, support responsif, dan terus berkembang bersama kebutuhan pengguna.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon" style="background:rgba(247,163,37,0.1);font-size:1.8rem">🤝</div>
+          <div class="card-title">Ekosistem & Mitra</div>
+          <div class="card-desc">AuliaSoft telah bermitra dengan Kementerian Koperasi RI, Onecoop, Simkopdes, Gantari, Cooplink, dan FORSIMIA — membangun ekosistem digital yang kuat untuk pelaku usaha Indonesia.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon" style="background:rgba(26,26,46,0.07);font-size:1.8rem">🏅</div>
+          <div class="card-title">Kepercayaan Pengguna</div>
+          <div class="card-desc">Dipercaya oleh ribuan pelaku UMKM di seluruh Indonesia. Rating produk 4.0/5.0 dengan stok produk yang selalu tersedia dan layanan garansi 1,5 tahun untuk setiap pembelian.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PK4: Business Domain -->
+    <div class="pk-panel" id="pk4">
+      <div class="grid-3">
+        <div class="card"><div class="card-icon" style="background:#fef3c7;font-size:1.5rem">🛍️</div><div class="card-title">Retail & Minimarket</div><div class="card-desc">Mini market, toko sembako, kelontong, toserba, waserda, dan berbagai jenis toko retail umum.</div></div>
+        <div class="card"><div class="card-icon" style="background:#fee2e2;font-size:1.5rem">🍽️</div><div class="card-title">Food & Beverage</div><div class="card-desc">Warung makan, kafe, bakso, ayam goreng, warung kopi, jus, food court, dan kuliner lainnya.</div></div>
+        <div class="card"><div class="card-icon" style="background:#d1fae5;font-size:1.5rem">⚙️</div><div class="card-title">Otomotif & Servis</div><div class="card-desc">Bengkel motor/mobil, toko spare part, carwash, counter HP, dan toko elektronik.</div></div>
+        <div class="card"><div class="card-icon" style="background:#ede9fe;font-size:1.5rem">👗</div><div class="card-title">Fashion & Lifestyle</div><div class="card-desc">Toko pakaian, fashion, sepatu, tas, aksesoris, cosmetic, parfum, dan produk lifestyle.</div></div>
+        <div class="card"><div class="card-icon" style="background:#e0f2fe;font-size:1.5rem">🌾</div><div class="card-title">Agribisnis</div><div class="card-desc">Obat tanaman, bibit, pakan ikan, sayuran, buah, dan berbagai kebutuhan pertanian.</div></div>
+        <div class="card"><div class="card-icon" style="background:#fce7f3;font-size:1.5rem">🏗️</div><div class="card-title">Material & Bangunan</div><div class="card-desc">Toko bangunan, kayu, listrik & lampu, dan material konstruksi lainnya.</div></div>
+      </div>
+    </div>
+
+    <!-- PK5: Target Audience -->
+    <div class="pk-panel" id="pk5">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-icon" style="background:rgba(232,67,147,0.1);font-size:1.5rem">👥</div>
+          <div class="card-title">Siapa Pengguna Ideal E-POS?</div>
+          <div class="card-desc">Pemilik usaha UMKM skala kecil-menengah yang ingin beralih dari pencatatan manual ke sistem digital. Cocok untuk usaha dengan 1 hingga banyak outlet.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon" style="background:rgba(0,201,167,0.1);font-size:1.5rem">📍</div>
+          <div class="card-title">Demografis Pengguna</div>
+          <div class="card-desc">Pengusaha di seluruh Indonesia, usia 20-50 tahun, dari berbagai latar belakang bisnis. Tidak harus melek teknologi — sistem dirancang mudah digunakan siapa pun.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon" style="background:rgba(247,163,37,0.1);font-size:1.5rem">🎯</div>
+          <div class="card-title">Pain Point yang Diselesaikan</div>
+          <div class="card-desc">Bingung mencatat penjualan manual, susah pantau stok, laporan keuangan tidak akurat, tidak bisa pantau bisnis dari jauh, dan kesulitan kelola banyak karyawan.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon" style="background:rgba(26,26,46,0.07);font-size:1.5rem">🌐</div>
+          <div class="card-title">Skala Bisnis yang Dilayani</div>
+          <div class="card-desc">Dari warung kecil dengan satu kasir hingga bisnis multi-outlet. E-POS tumbuh bersama bisnis Anda — mulai dari paket Basic, naik ke Premium sesuai kebutuhan.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PK6: Kustomisasi -->
+    <div class="pk-panel" id="pk6">
+      <div class="grid-3">
+        <div class="card"><div class="card-icon" style="background:#fef3c7;font-size:1.5rem">🎨</div><div class="card-title">Tampilan Toko Online</div><div class="card-desc">Sesuaikan tampilan toko online Anda dengan nama toko, logo, banner, dan domain sendiri (paket Premium).</div></div>
+        <div class="card"><div class="card-icon" style="background:#d1fae5;font-size:1.5rem">⚙️</div><div class="card-title">Pengaturan Produk & Kategori</div><div class="card-desc">Buat kategori produk, varian, satuan, harga grosir, diskon, dan promo sesuai kebutuhan bisnis Anda.</div></div>
+        <div class="card"><div class="card-icon" style="background:#ede9fe;font-size:1.5rem">👤</div><div class="card-title">Multi-User & Hak Akses</div><div class="card-desc">Atur peran dan izin untuk setiap karyawan — kasir, staf gudang, manajer, atau pemilik punya tampilan dan akses berbeda.</div></div>
+        <div class="card"><div class="card-icon" style="background:#fee2e2;font-size:1.5rem">📊</div><div class="card-title">Laporan Custom</div><div class="card-desc">Filter dan ekspor laporan sesuai periode, outlet, produk, atau karyawan yang Anda inginkan.</div></div>
+        <div class="card"><div class="card-icon" style="background:#e0f2fe;font-size:1.5rem">💳</div><div class="card-title">Metode Pembayaran</div><div class="card-desc">Aktifkan metode pembayaran sesuai kebutuhan: tunai, QRIS, EDC kartu debit/kredit, atau digital payment lainnya.</div></div>
+        <div class="card"><div class="card-icon" style="background:#fce7f3;font-size:1.5rem">🔔</div><div class="card-title">Notifikasi & Struk Digital</div><div class="card-desc">Pilih metode pengiriman struk: WhatsApp, SMS, atau email. Kustomisasi template struk dengan logo dan nama toko.</div></div>
+      </div>
+    </div>
+
+    <!-- PK7: FAQ (mini) -->
+    <div class="pk-panel" id="pk7">
+      <div style="display:flex;flex-direction:column;gap:0.75rem">
+        <div class="card" onclick="toggleFaq2(this)" style="cursor:pointer">
+          <div style="font-weight:700;display:flex;justify-content:space-between">Apakah E-POS bisa digunakan tanpa koneksi internet? <span style="color:var(--accent)">+</span></div>
+          <div class="faq2-body" style="display:none;margin-top:0.75rem;color:var(--text-muted);font-size:0.875rem;line-height:1.6">E-POS adalah sistem berbasis cloud/web, sehingga membutuhkan koneksi internet untuk beroperasi secara optimal. Namun tersedia mode terbatas untuk kondisi koneksi tidak stabil.</div>
+        </div>
+        <div class="card" onclick="toggleFaq2(this)" style="cursor:pointer">
+          <div style="font-weight:700;display:flex;justify-content:space-between">Bagaimana cara memesan E-POS AULIASOFT? <span style="color:var(--accent)">+</span></div>
+          <div class="faq2-body" style="display:none;margin-top:0.75rem;color:var(--text-muted);font-size:0.875rem;line-height:1.6">Pemesanan dilakukan melalui WhatsApp ke 0812-4194-5881. Tim kami akan membantu proses aktivasi dan onboarding Anda.</div>
+        </div>
+        <div class="card" onclick="toggleFaq2(this)" style="cursor:pointer">
+          <div style="font-weight:700;display:flex;justify-content:space-between">Berapa lama garansi produk? <span style="color:var(--accent)">+</span></div>
+          <div class="faq2-body" style="display:none;margin-top:0.75rem;color:var(--text-muted);font-size:0.875rem;line-height:1.6">Setiap pembelian produk E-POS AULIASOFT mendapatkan garansi aplikasi selama 1,5 tahun disertai support online dan WhatsApp 24/7.</div>
+        </div>
+        <div class="card" onclick="toggleFaq2(this)" style="cursor:pointer">
+          <div style="font-weight:700;display:flex;justify-content:space-between">Apakah data saya aman di E-POS? <span style="color:var(--accent)">+</span></div>
+          <div class="faq2-body" style="display:none;margin-top:0.75rem;color:var(--text-muted);font-size:0.875rem;line-height:1.6">Data transaksi dan bisnis Anda dilindungi dengan enkripsi dan disimpan di server yang aman. Backup data dilakukan secara berkala.</div>
+        </div>
+        <div class="card" onclick="toggleFaq2(this)" style="cursor:pointer">
+          <div style="font-weight:700;display:flex;justify-content:space-between">Bisa upgrade paket dari Basic ke Premium? <span style="color:var(--accent)">+</span></div>
+          <div class="faq2-body" style="display:none;margin-top:0.75rem;color:var(--text-muted);font-size:0.875rem;line-height:1.6">Tentu bisa! Hubungi tim kami melalui WhatsApp untuk proses upgrade paket. Data dan pengaturan existing Anda akan tetap tersimpan.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PK8: Roadmap -->
+    <div class="pk-panel" id="pk8">
+      <div style="display:flex;flex-direction:column;gap:1rem">
+        <div class="card" style="border-left:4px solid var(--accent3)">
+          <div style="font-weight:700;color:var(--accent3);margin-bottom:0.25rem">Q1 2026 — Sudah Tersedia ✅</div>
+          <div class="card-title">Core POS + Toko Online</div>
+          <div class="card-desc">Kasir online, manajemen inventori, CRM, laporan, QRIS, integrasi marketplace (Shopee, Tokopedia, Grabmart).</div>
+        </div>
+        <div class="card" style="border-left:4px solid var(--accent2)">
+          <div style="font-weight:700;color:var(--accent2);margin-bottom:0.25rem">Q2 2026 — Dalam Pengembangan 🔄</div>
+          <div class="card-title">Aulia Teams & Payroll</div>
+          <div class="card-desc">Absensi geolokasi, ePayslip, integrasi rekening bank, shift management, dan broadcast pengumuman karyawan.</div>
+        </div>
+        <div class="card" style="border-left:4px solid var(--accent)">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:0.25rem">Q3 2026 — Direncanakan 📋</div>
+          <div class="card-title">AI Analytics & Prediksi Stok</div>
+          <div class="card-desc">Rekomendasi reorder stok berbasis AI, prediksi penjualan, dan analisa tren produk otomatis.</div>
+        </div>
+        <div class="card" style="border-left:4px solid #6b7280">
+          <div style="font-weight:700;color:#6b7280;margin-bottom:0.25rem">Q4 2026 — Direncanakan 📋</div>
+          <div class="card-title">Mobile App Native</div>
+          <div class="card-desc">Aplikasi kasir native Android/iOS untuk pengalaman yang lebih cepat dan bisa digunakan offline.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PK9: Kompetitor -->
+    <div class="pk-panel" id="pk9">
+      <div class="grid-3">
+        <div class="card" style="border-top:3px solid var(--accent)">
+          <div class="card-icon" style="background:rgba(232,67,147,0.1);font-size:1.5rem">🏆</div>
+          <div class="card-title">Keunggulan E-POS vs Kompetitor</div>
+          <div class="card-desc">Harga lebih terjangkau dengan fitur lengkap. Garansi 1,5 tahun dan support 24/7 yang tidak semua kompetitor tawarkan.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon" style="font-size:1.5rem">⚖️</div>
+          <div class="card-title">vs Sistem POS Umum</div>
+          <div class="card-desc">E-POS menawarkan integrasi marketplace bawaan, manajemen karyawan, dan akuntansi dalam satu paket — tidak perlu beli add-on terpisah.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon" style="font-size:1.5rem">🇮🇩</div>
+          <div class="card-title">Solusi Lokal untuk UMKM Lokal</div>
+          <div class="card-desc">Dibangun dan didukung oleh tim Indonesia yang memahami kebutuhan UMKM lokal — bahasa Indonesia, support mudah, dan harga sesuai kantong.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PK10: Produk Pendukung -->
+    <div class="pk-panel" id="pk10">
+      <div class="grid-3">
+        <div class="card"><div class="card-icon" style="background:#fce7f3;font-size:1.5rem">🛒</div><div class="card-title">E-WARUNG</div><div class="card-desc">Aplikasi kasir khusus warung dan kafe berbasis web. Kelola menu, meja, dan pesanan dengan mudah. Harga mulai Rp 149.999.</div></div>
+        <div class="card"><div class="card-icon" style="background:#e0f2fe;font-size:1.5rem">🏪</div><div class="card-title">E-OLSHOP</div><div class="card-desc">Aplikasi web toko online untuk promosi dan pemesanan via WhatsApp. Cocok untuk UMKM yang ingin jualan online. Rp 199.999.</div></div>
+        <div class="card"><div class="card-icon" style="background:#fef3c7;font-size:1.5rem">📱</div><div class="card-title">A-POS</div><div class="card-desc">Aplikasi kasir sederhana berbasis desktop untuk usaha dengan kebutuhan dasar. Harga mulai Rp 50.000.</div></div>
+        <div class="card"><div class="card-icon" style="background:#d1fae5;font-size:1.5rem">🖨️</div><div class="card-title">Hardware POS</div><div class="card-desc">Perangkat pendukung kasir: printer struk, barcode scanner, cash drawer, dan tablet POS tersedia di toko AuliaSoft.</div></div>
+        <div class="card"><div class="card-icon" style="background:#ede9fe;font-size:1.5rem">🌐</div><div class="card-title">Jasa Web</div><div class="card-desc">Pembuatan website bisnis profesional untuk memperkuat kehadiran online usaha Anda di era digital.</div></div>
+        <div class="card"><div class="card-icon" style="background:#fee2e2;font-size:1.5rem">🤝</div><div class="card-title">Aulia Teams</div><div class="card-desc">Modul absensi, payroll, dan manajemen tim yang terintegrasi dengan E-POS untuk efisiensi operasional karyawan.</div></div>
+      </div>
+    </div>
+
+    <!-- PK11: Use Cases -->
+    <div class="pk-panel" id="pk11">
+      <div class="usecase-list">
+        <div class="usecase-item"><div class="usecase-num">1</div><div><div class="usecase-title">Kasir Toko Kelontong</div><div class="usecase-desc">Pemilik warung scan barcode, proses pembayaran QRIS, dan cetak struk WhatsApp dalam hitungan detik.</div></div></div>
+        <div class="usecase-item"><div class="usecase-num">2</div><div><div class="usecase-title">Manajemen Stok Multi-Outlet</div><div class="usecase-desc">Pemilik minimarket memantau stok di 3 cabang sekaligus dari aplikasi owner di smartphone.</div></div></div>
+        <div class="usecase-item"><div class="usecase-num">3</div><div><div class="usecase-title">Order Meja Kafe</div><div class="usecase-desc">Pelanggan scan QR E-menu, pesan langsung dari ponsel, pesanan masuk ke dapur secara otomatis.</div></div></div>
+        <div class="usecase-item"><div class="usecase-num">4</div><div><div class="usecase-title">Laporan Keuangan Akurat</div><div class="usecase-desc">Akuntan atau pemilik ekspor laporan laba-rugi, CoA, dan arus kas dalam format siap analisa kapan pun.</div></div></div>
+      </div>
+    </div>
+
+    <!-- PK12: Proses & Kebijakan -->
+    <div class="pk-panel" id="pk12">
+      <div class="grid-2">
+        <div class="card"><div class="card-icon" style="background:rgba(0,201,167,0.1);font-size:1.5rem">🛒</div><div class="card-title">Cara Pemesanan</div><div class="card-desc">Pilih paket → Hubungi via WhatsApp 0812-4194-5881 → Konfirmasi pembayaran → Aktivasi sistem dalam 1x24 jam.</div></div>
+        <div class="card"><div class="card-icon" style="background:rgba(232,67,147,0.1);font-size:1.5rem">🔄</div><div class="card-title">Kebijakan Garansi</div><div class="card-desc">Garansi aplikasi 1,5 tahun mencakup bug fix, update fitur, dan support teknis. Tidak mencakup kerusakan akibat penggunaan tidak sesuai panduan.</div></div>
+        <div class="card"><div class="card-icon" style="background:rgba(247,163,37,0.1);font-size:1.5rem">💰</div><div class="card-title">Kebijakan Pembayaran</div><div class="card-desc">Pembayaran di muka sebelum aktivasi. Tersedia berbagai metode: transfer bank, e-wallet. Bukti pembayaran wajib dikirim via WhatsApp.</div></div>
+        <div class="card"><div class="card-icon" style="background:rgba(26,26,46,0.07);font-size:1.5rem">🔒</div><div class="card-title">Kebijakan Privasi Data</div><div class="card-desc">Data pengguna dan transaksi dijaga kerahasiaannya. Tidak disebarkan kepada pihak ketiga. Backup data berkala sesuai SLA.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FITUR UTAMA E-POS -->
+<section id="features">
+  <div class="container">
+    <span class="section-tag">Fitur Utama</span>
+    <h2 class="section-title">Semua yang Anda Butuhkan<br>dalam Satu Platform</h2>
+    <p class="section-subtitle">E-POS AULIASOFT hadir dengan fitur lengkap yang dirancang untuk mempermudah operasional bisnis sehari-hari Anda.</p>
+    <div class="feature-grid">
+      <div class="feature-card"><div class="feature-icon">🧾</div><div class="feature-title">Kasir Online Real-time</div><div class="feature-desc">Proses transaksi cepat dengan antarmuka yang intuitif. Mendukung barcode, multisatuan, diskon, dan metode bayar beragam.</div></div>
+      <div class="feature-card"><div class="feature-icon">📦</div><div class="feature-title">Inventori Cerdas</div><div class="feature-desc">Pantau stok real-time, alert stok menipis, COGS otomatis, transfer antar outlet, dan produksi stok.</div></div>
+      <div class="feature-card"><div class="feature-icon">🌐</div><div class="feature-title">Toko Online Built-in</div><div class="feature-desc">Buka toko online langsung dari E-POS. Sinkronisasi produk otomatis ke website, marketplace, dan order online.</div></div>
+      <div class="feature-card"><div class="feature-icon">📊</div><div class="feature-title">Laporan & Analitik</div><div class="feature-desc">Dashboard bisnis visual, laporan penjualan harian/bulanan, analisa produk terlaris, dan laporan akuntansi lengkap.</div></div>
+      <div class="feature-card"><div class="feature-icon">💳</div><div class="feature-title">Pembayaran Digital</div><div class="feature-desc">QRIS Dynamic, EDC kartu, struk digital via WhatsApp/SMS/Email. Semua transaksi tercatat otomatis.</div></div>
+      <div class="feature-card"><div class="feature-icon">👥</div><div class="feature-title">Kelola Tim & Absensi</div><div class="feature-desc">Absensi foto karyawan, shift, otorisasi, hak akses per peran, penggajian, dan payroll terintegrasi.</div></div>
+      <div class="feature-card"><div class="feature-icon">🏪</div><div class="feature-title">Multi-Outlet Support</div><div class="feature-desc">Kelola banyak cabang dalam satu akun. Pantau semua outlet dari aplikasi owner di smartphone Anda.</div></div>
+      <div class="feature-card"><div class="feature-icon">🤝</div><div class="feature-title">CRM Pelanggan</div><div class="feature-desc">Database pelanggan, riwayat transaksi, deposit pelanggan, dan program loyalitas untuk tingkatkan repeat order.</div></div>
+      <div class="feature-card"><div class="feature-icon">📱</div><div class="feature-title">Akses dari Mana Saja</div><div class="feature-desc">Berbasis web — bisa dibuka dari komputer, tablet, atau HP. Tidak perlu install, selalu update otomatis.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- USE CASE -->
+<section id="usecase">
+  <div class="container">
+    <span class="section-tag">Use Case</span>
+    <h2 class="section-title">Bagaimana E-POS AULIASOFT<br>Digunakan dalam Bisnis Sehari-hari</h2>
+    <p class="section-subtitle">Dari warung kelontong hingga kafe modern — E-POS beradaptasi dengan kebutuhan bisnis Anda.</p>
+    <div class="usecase-list" style="margin-top:3rem">
+      <div class="usecase-item">
+        <div class="usecase-num">1</div>
+        <div>
+          <div class="usecase-title">Kasir Warung & Minimarket</div>
+          <div class="usecase-desc">Pemilik warung scan produk dengan barcode, pilih metode bayar (tunai atau QRIS), dan kirim struk langsung ke WhatsApp pelanggan. Stok otomatis berkurang setiap transaksi.</div>
+        </div>
+      </div>
+      <div class="usecase-item">
+        <div class="usecase-num">2</div>
+        <div>
+          <div class="usecase-title">Order Meja & E-Menu Kafe</div>
+          <div class="usecase-desc">Pelanggan scan QR code di meja, lihat menu digital, dan pesan langsung dari ponsel. Pesanan masuk otomatis ke dapur tanpa pelayan mencatat manual.</div>
+        </div>
+      </div>
+      <div class="usecase-item">
+        <div class="usecase-num">3</div>
+        <div>
+          <div class="usecase-title">Pantau Multi-Outlet dari HP</div>
+          <div class="usecase-desc">Pemilik toko dengan 3 cabang memantau omzet, stok, dan performa karyawan semua outlet secara real-time dari aplikasi owner di smartphone.</div>
+        </div>
+      </div>
+      <div class="usecase-item">
+        <div class="usecase-num">4</div>
+        <div>
+          <div class="usecase-title">Manajemen Stok Otomatis</div>
+          <div class="usecase-desc">Saat stok produk menipis, sistem otomatis memberi notifikasi. Transfer stok antar outlet bisa dilakukan langsung dari dashboard tanpa telepon-teleponan.</div>
+        </div>
+      </div>
+      <div class="usecase-item">
+        <div class="usecase-num">5</div>
+        <div>
+          <div class="usecase-title">Jualan Online Terintegrasi</div>
+          <div class="usecase-desc">Produk dari E-POS otomatis tersinkronisasi ke Shopee, Tokopedia, dan website toko. Satu sistem untuk kelola semua channel penjualan.</div>
+        </div>
+      </div>
+      <div class="usecase-item">
+        <div class="usecase-num">6</div>
+        <div>
+          <div class="usecase-title">Laporan Keuangan Bulanan</div>
+          <div class="usecase-desc">Di akhir bulan, pemilik toko ekspor laporan laba-rugi, arus kas, dan analisa produk terlaris — semua sudah tersusun rapi, tidak perlu hitung manual lagi.</div>
+        </div>
+      </div>
+      <div class="usecase-item">
+        <div class="usecase-num">7</div>
+        <div>
+          <div class="usecase-title">Absensi & Gaji Karyawan</div>
+          <div class="usecase-desc">Karyawan absensi dengan foto dari HP, sistem hitung jam kerja dan lembur otomatis, lalu proses gaji dan transfer langsung ke rekening karyawan.</div>
+        </div>
+      </div>
+      <div class="usecase-item">
+        <div class="usecase-num">8</div>
+        <div>
+          <div class="usecase-title">Program Loyalitas Pelanggan</div>
+          <div class="usecase-desc">Pelanggan setia mendapat deposit reward yang bisa digunakan untuk transaksi berikutnya. CRM mencatat semua riwayat pembelian untuk analisa kebiasaan belanja.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="container">
+    <div style="text-align:center">
+      <span class="section-tag">Paket Harga</span>
+      <h2 class="section-title">Pilih Paket E-POS<br>yang Sesuai Kebutuhan</h2>
+      <p class="section-subtitle" style="margin:0 auto 1rem">Harga transparan, tanpa biaya tersembunyi. Garansi 1,5 tahun + support 24/7.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="pricing-plan">Paket</div>
+        <div class="pricing-name">Basic</div>
+        <div class="pricing-price">
+          <span class="pricing-amount">Rp 149.999</span>
+          <div class="pricing-period">Biaya aktivasi · Garansi 1,5 tahun</div>
+        </div>
+        <div class="pricing-desc">Untuk usaha baru yang ingin mulai digital. Single outlet dengan fitur kasir, inventori, dan pembayaran QRIS.</div>
+        <ul class="pricing-features">
+          <li>Single Outlet</li>
+          <li>Toko Online</li>
+          <li>Aplikasi Kasir Online</li>
+          <li>Manajemen Inventori</li>
+          <li>CRM Pelanggan</li>
+          <li>Laporan Lengkap</li>
+          <li>Manajemen Karyawan</li>
+          <li>Pencatatan Keuangan (Invoice, SO, DO)</li>
+          <li>Digital Payment (QRIS)</li>
+        </ul>
+        <a href="https://wa.me/6281241945881?text=Halo,%20saya%20ingin%20memesan%20E-POS%20Basic" target="_blank" class="pricing-btn outline">Pesan via WhatsApp</a>
+      </div>
+      <div class="pricing-card featured">
+        <div class="pricing-badge">⭐ Paling Populer</div>
+        <div class="pricing-plan">Paket</div>
+        <div class="pricing-name">Basic Plus</div>
+        <div class="pricing-price">
+          <span class="pricing-amount">Rp 349.999</span>
+          <div class="pricing-period">Biaya aktivasi · Garansi 1,5 tahun</div>
+        </div>
+        <div class="pricing-desc">Untuk bisnis berkembang. Multi outlet, akuntansi lengkap, EDC, analisa bisnis, dan absensi karyawan.</div>
+        <ul class="pricing-features">
+          <li>Multi Outlet</li>
+          <li>Toko Online</li>
+          <li>Kasir Online (Meja, Multisatuan)</li>
+          <li>Inventori (COGS, Produksi, Transfer Stok)</li>
+          <li>CRM (Deposit Pelanggan)</li>
+          <li>Analisa Bisnis</li>
+          <li>Karyawan (Absensi Foto, Otorisasi)</li>
+          <li>Akuntansi Lengkap (CoA, Auto Posting)</li>
+          <li>QRIS Dynamic + EDC Kartu</li>
+          <li>Struk Digital (WA, SMS, Email)</li>
+          <li>Aplikasi Owner + Order Online</li>
+        </ul>
+        <a href="https://wa.me/6281241945881?text=Halo,%20saya%20ingin%20memesan%20E-POS%20Basic%20Plus" target="_blank" class="pricing-btn filled">Pesan via WhatsApp</a>
+      </div>
+    </div>
+    <div class="card" style="max-width:760px;margin:1.5rem auto 0;text-align:center">
+      <div style="font-weight:700;margin-bottom:0.5rem">🚀 Butuh Paket Premium (Rp 749.999)?</div>
+      <div class="card-desc" style="margin-bottom:1rem">Termasuk Payroll lengkap, Omnichannel marketplace, serial/batch number, Aulia Teams, dan semua fitur tanpa batas.</div>
+      <a href="https://wa.me/6281241945881?text=Halo,%20saya%20ingin%20info%20E-POS%20Premium" target="_blank" class="btn-primary" style="display:inline-flex">Konsultasi Gratis →</a>
+    </div>
+  </div>
+</section>
+
+<!-- MORE -->
+<section id="more">
+  <div class="container">
+    <span class="section-tag" style="background:rgba(232,67,147,0.15);color:#f48fb1">More</span>
+    <h2 class="section-title">Lebih Lanjut tentang E-POS AULIASOFT</h2>
+    <p class="section-subtitle">Eksplorasi keunggulan, produk pendukung, FAQ, dan informasi lengkap lainnya.</p>
+
+    <div class="more-tabs" style="margin-top:2rem">
+      <div class="more-tab active" onclick="switchMore(this,'m1')">🏆 Keunggulan</div>
+      <div class="more-tab" onclick="switchMore(this,'m2')">🔗 Produk Pendukung</div>
+      <div class="more-tab" onclick="switchMore(this,'m3')">❓ FAQ</div>
+      <div class="more-tab" onclick="switchMore(this,'m4')">📜 Proses & Kebijakan</div>
+      <div class="more-tab" onclick="switchMore(this,'m5')">🗺️ Roadmap</div>
+      <div class="more-tab" onclick="switchMore(this,'m6')">⭐ Testimoni</div>
+      <div class="more-tab" onclick="switchMore(this,'m7')">📞 Kontak</div>
+    </div>
+
+    <!-- Keunggulan -->
+    <div class="more-panel active" id="m1">
+      <div class="advantage-grid">
+        <div class="advantage-card"><div class="advantage-icon">💰</div><div class="advantage-title">Harga Terjangkau</div><div class="advantage-desc">Mulai dari Rp 149.999 — jauh lebih murah dibanding kompetitor dengan fitur yang lebih lengkap dan garansi nyata.</div></div>
+        <div class="advantage-card"><div class="advantage-icon">⚡</div><div class="advantage-title">Aktivasi Cepat</div><div class="advantage-desc">Pesan via WhatsApp, konfirmasi bayar, dan sistem aktif dalam 1x24 jam. Tidak perlu instalasi rumit.</div></div>
+        <div class="advantage-card"><div class="advantage-icon">🛡️</div><div class="advantage-title">Garansi 1,5 Tahun</div><div class="advantage-desc">Garansi aplikasi terlama di kelasnya. Bug fix, update, dan support teknis selama masa garansi tanpa biaya tambahan.</div></div>
+        <div class="advantage-card"><div class="advantage-icon">📱</div><div class="advantage-title">Akses Multi-Device</div><div class="advantage-desc">Berbasis web — buka dari PC, laptop, tablet, atau HP. Tidak perlu install aplikasi, selalu versi terbaru.</div></div>
+        <div class="advantage-card"><div class="advantage-icon">🇮🇩</div><div class="advantage-title">Support Lokal 24/7</div><div class="advantage-desc">Tim support Indonesia yang responsif via WhatsApp 24/7. Bahasa Indonesia, paham masalah UMKM lokal.</div></div>
+        <div class="advantage-card"><div class="advantage-icon">🔗</div><div class="advantage-title">Integrasi Ekosistem</div><div class="advantage-desc">Bermitra dengan Kemenkop, Onecoop, Simkopdes, Gantari, dan platform nasional lainnya.</div></div>
+      </div>
+    </div>
+
+    <!-- Produk Pendukung -->
+    <div class="more-panel" id="m2">
+      <div class="product-grid">
+        <div class="product-item"><div class="product-item-icon">☕</div><div class="product-item-name">E-WARUNG</div><div class="product-item-desc">Kasir online khusus warung dan kafe. Manajemen menu, meja, dan pesanan digital.</div><span class="product-item-badge">Rp 149.999</span></div>
+        <div class="product-item"><div class="product-item-icon">🛒</div><div class="product-item-name">E-OLSHOP</div><div class="product-item-desc">Toko online untuk promosi dan pemesanan via WhatsApp. Mudah dan praktis.</div><span class="product-item-badge">Rp 199.999</span></div>
+        <div class="product-item"><div class="product-item-icon">📱</div><div class="product-item-name">A-POS / A-WARUNG</div><div class="product-item-desc">Kasir sederhana untuk UMKM pemula. Fitur dasar, harga sangat terjangkau.</div><span class="product-item-badge">Rp 50.000</span></div>
+        <div class="product-item"><div class="product-item-icon">🖨️</div><div class="product-item-name">Hardware POS</div><div class="product-item-desc">Printer struk, barcode scanner, cash drawer tersedia di toko AuliaSoft.</div><span class="product-item-badge">Hardware</span></div>
+        <div class="product-item"><div class="product-item-icon">🌐</div><div class="product-item-name">Jasa Web</div><div class="product-item-desc">Pembuatan website bisnis profesional untuk memperkuat branding online Anda.</div><span class="product-item-badge">Custom</span></div>
+        <div class="product-item"><div class="product-item-icon">👥</div><div class="product-item-name">Aulia Teams</div><div class="product-item-desc">Absensi geolokasi, ePayslip, shift management terintegrasi dengan E-POS.</div><span class="product-item-badge">Add-on</span></div>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="more-panel" id="m3">
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">Apakah E-POS cocok untuk warung kecil sekalipun?</div>
+          <div class="faq-a">Sangat cocok! Paket Basic dirancang khusus untuk usaha kecil yang ingin mulai digital. Fitur kasir, inventori, dan QRIS sudah tersedia di harga Rp 149.999.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">Berapa lama proses aktivasi setelah pembayaran?</div>
+          <div class="faq-a">Aktivasi dilakukan dalam 1x24 jam setelah pembayaran dikonfirmasi. Tim kami akan membantu proses setup dan onboarding agar Anda langsung bisa pakai.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">Apakah ada biaya bulanan setelah pembelian?</div>
+          <div class="faq-a">Tidak ada biaya langganan bulanan tersembunyi. Harga yang dibayarkan adalah biaya aktivasi satu kali dengan garansi 1,5 tahun termasuk update dan support.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">Bisa digunakan dari HP Android atau iPhone?</div>
+          <div class="faq-a">Ya! E-POS berbasis web sehingga bisa diakses dari browser di HP Android, iPhone, tablet, laptop, maupun komputer desktop tanpa perlu install aplikasi.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">Bagaimana jika saya mengalami masalah teknis?</div>
+          <div class="faq-a">Tim support AuliaSoft siap membantu 24/7 via WhatsApp di 0812-4194-5881. Masalah teknis ditangani oleh tim Indonesia yang berpengalaman.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">Apakah data saya akan hilang jika mengganti perangkat?</div>
+          <div class="faq-a">Tidak. Semua data tersimpan di cloud server AuliaSoft. Anda bisa login dari perangkat apa pun dan semua data transaksi, stok, serta laporan tetap tersedia.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Proses & Kebijakan -->
+    <div class="more-panel" id="m4">
+      <div class="process-steps">
+        <div class="process-step"><div class="step-num">1</div><div><div class="step-content-title">Pilih Paket</div><div class="step-content-desc">Kunjungi auliasoft.com, pilih paket E-POS yang sesuai (Basic, Basic Plus, atau Premium) berdasarkan kebutuhan bisnis Anda.</div></div></div>
+        <div class="process-step"><div class="step-num">2</div><div><div class="step-content-title">Hubungi via WhatsApp</div><div class="step-content-desc">Klik tombol "Pesan via WhatsApp" atau hubungi langsung ke 0812-4194-5881. Tim kami akan memandu proses pemesanan.</div></div></div>
+        <div class="process-step"><div class="step-num">3</div><div><div class="step-content-title">Lakukan Pembayaran</div><div class="step-content-desc">Transfer ke rekening yang diberikan. Kirim bukti pembayaran via WhatsApp. Tersedia metode transfer bank dan e-wallet.</div></div></div>
+        <div class="process-step"><div class="step-num">4</div><div><div class="step-content-title">Aktivasi & Onboarding</div><div class="step-content-desc">Dalam 1x24 jam sistem diaktivasi. Tim kami akan membantu setup awal, input produk pertama, dan pelatihan penggunaan.</div></div></div>
+        <div class="process-step"><div class="step-num">5</div><div><div class="step-content-title">Mulai Berjualan</div><div class="step-content-desc">Sistem siap digunakan! Nikmati fitur lengkap E-POS dengan garansi 1,5 tahun dan support 24/7 sepanjang masa garansi.</div></div></div>
+      </div>
+      <div style="margin-top:2rem;display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+        <div style="background:rgba(0,201,167,0.1);border:1px solid rgba(0,201,167,0.2);border-radius:12px;padding:1.25rem">
+          <div style="font-weight:700;color:var(--accent3);margin-bottom:0.5rem">✅ Yang Termasuk Garansi</div>
+          <div style="font-size:0.85rem;color:#9ca3af;line-height:1.7">Perbaikan bug, update fitur minor, support teknis via WhatsApp, dan konsultasi penggunaan selama 1,5 tahun.</div>
+        </div>
+        <div style="background:rgba(232,67,147,0.1);border:1px solid rgba(232,67,147,0.2);border-radius:12px;padding:1.25rem">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:0.5rem">⚠️ Kebijakan Pengembalian</div>
+          <div style="font-size:0.85rem;color:#9ca3af;line-height:1.7">Pengembalian dana tidak dapat dilakukan setelah sistem diaktivasi. Hubungi tim kami jika ada kendala sebelum aktivasi.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Roadmap -->
+    <div class="more-panel" id="m5">
+      <div class="roadmap-timeline">
+        <div class="roadmap-item"><div class="roadmap-quarter">Q1 '26</div><div><div class="roadmap-title">Core E-POS Platform <span class="roadmap-status done">Tersedia</span></div><div class="roadmap-desc">Kasir online, inventori, CRM, laporan, QRIS, toko online, integrasi Shopee/Tokopedia/Grabmart.</div></div></div>
+        <div class="roadmap-item"><div class="roadmap-quarter">Q2 '26</div><div><div class="roadmap-title">Aulia Teams Full <span class="roadmap-status progress">Dalam Proses</span></div><div class="roadmap-desc">Absensi geolokasi, ePayslip, integrasi rekening bank, broadcast pengumuman tim.</div></div></div>
+        <div class="roadmap-item"><div class="roadmap-quarter">Q3 '26</div><div><div class="roadmap-title">AI Smart Analytics <span class="roadmap-status planned">Direncanakan</span></div><div class="roadmap-desc">Prediksi reorder stok berbasis AI, rekomendasi promosi otomatis, analisa tren penjualan.</div></div></div>
+        <div class="roadmap-item"><div class="roadmap-quarter">Q4 '26</div><div><div class="roadmap-title">Mobile App Native <span class="roadmap-status planned">Direncanakan</span></div><div class="roadmap-desc">Aplikasi kasir Android & iOS native dengan mode offline untuk operasional tanpa internet.</div></div></div>
+        <div class="roadmap-item"><div class="roadmap-quarter">2027</div><div><div class="roadmap-title">API & Integrasi Open <span class="roadmap-status planned">Direncanakan</span></div><div class="roadmap-desc">API terbuka untuk integrasi dengan sistem akuntansi pihak ketiga, ERP, dan platform bisnis lainnya.</div></div></div>
+      </div>
+    </div>
+
+    <!-- Testimoni -->
+    <div class="more-panel" id="m6">
+      <div class="testi-grid">
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-text">"Sejak pakai E-POS, laporan keuangan toko saya jadi rapi dan akurat. Tidak perlu lagi catat manual di buku. Tim supportnya juga responsif banget!"</div>
+          <div class="testi-author"><div class="testi-avatar">BW</div><div><div class="testi-name">Budi Wibowo</div><div class="testi-role">Pemilik Minimarket, Jawa Tengah</div></div></div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-text">"Kafe saya jauh lebih efisien sekarang. Pelanggan bisa order dari QR menu sendiri, pesanan langsung masuk ke dapur. Omzet naik 30% dalam 2 bulan!"</div>
+          <div class="testi-author"><div class="testi-avatar">SA</div><div><div class="testi-name">Siti Aisyah</div><div class="testi-role">Owner Kafe & Resto, Surabaya</div></div></div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★☆</div>
+          <div class="testi-text">"Harganya sangat terjangkau untuk fitur selengkap ini. Saya bisa pantau 2 toko saya dari HP kapan saja. Highly recommended untuk UMKM!"</div>
+          <div class="testi-author"><div class="testi-avatar">RP</div><div><div class="testi-name">Rizky Pratama</div><div class="testi-role">Pemilik Toko Sembako, Bandung</div></div></div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-text">"Stok barang di toko fashion saya sekarang tidak pernah kecolongan. Notifikasi stok menipis sangat membantu planning pembelian barang."</div>
+          <div class="testi-author"><div class="testi-avatar">DN</div><div><div class="testi-name">Dewi Nuraini</div><div class="testi-role">Owner Toko Fashion, Jakarta</div></div></div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-text">"Support AuliaSoft cepat sekali responnya. Saat ada masalah teknis jam 11 malam pun langsung dibalas dan diselesaikan. Pelayanan luar biasa!"</div>
+          <div class="testi-author"><div class="testi-avatar">HM</div><div><div class="testi-name">Hendra Mulia</div><div class="testi-role">Pemilik Bengkel Motor, Medan</div></div></div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-text">"Sekarang bayar gaji karyawan tidak perlu hitung manual lagi. Modul payroll E-POS Premium menghemat waktu saya 2 hari setiap akhir bulan!"</div>
+          <div class="testi-author"><div class="testi-avatar">LK</div><div><div class="testi-name">Linda Kartini</div><div class="testi-role">Pemilik Toko Kelontong, Makassar</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Kontak -->
+    <div class="more-panel" id="m7">
+      <div class="contact-grid">
+        <div class="contact-info">
+          <h3 style="font-family:'Fraunces',serif;font-size:1.8rem;font-weight:700;color:#fff;margin-bottom:1.5rem">Hubungi Kami</h3>
+          <div class="contact-item"><div class="contact-icon">📱</div><div><div class="contact-label">WhatsApp (24/7)</div><div class="contact-value">0812-4194-5881</div></div></div>
+          <div class="contact-item"><div class="contact-icon">🌐</div><div><div class="contact-label">Website</div><div class="contact-value">www.auliasoft.com</div></div></div>
+          <div class="contact-item"><div class="contact-icon">📧</div><div><div class="contact-label">Email</div><div class="contact-value">support@auliasoft.com</div></div></div>
+          <div class="contact-item"><div class="contact-icon">⏰</div><div><div class="contact-label">Jam Operasional</div><div class="contact-value">Support 24/7 via WhatsApp</div></div></div>
+          <div style="margin-top:2rem">
+            <a href="https://wa.me/6281241945881" target="_blank" class="btn-primary">💬 Chat WhatsApp Sekarang</a>
+          </div>
+        </div>
+        <div class="contact-form-card">
+          <h4 style="color:#fff;font-weight:700;margin-bottom:1.5rem">Kirim Pertanyaan</h4>
+          <div class="form-group">
+            <label class="form-label">Nama Lengkap</label>
+            <input type="text" class="form-input" placeholder="Nama Anda">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Nomor WhatsApp</label>
+            <input type="text" class="form-input" placeholder="08xx-xxxx-xxxx">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Jenis Usaha</label>
+            <input type="text" class="form-input" placeholder="Misal: Minimarket, Kafe, dll">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Pesan / Pertanyaan</label>
+            <textarea class="form-textarea" placeholder="Tuliskan pertanyaan atau kebutuhan Anda..."></textarea>
+          </div>
+          <button onclick="sendWA()" class="btn-primary" style="width:100%;justify-content:center;border-radius:10px">Kirim via WhatsApp →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">E-POS <span>AULIA</span>SOFT</div>
+  <div class="footer-text">Sistem Kasir Online untuk UMKM Indonesia<br>Jalankan Bisnis Tanpa Ribet dengan AuliaSoft Digital</div>
+  <div class="footer-links">
+    <a href="#home">Beranda</a>
+    <a href="#knowledge">Produk</a>
+    <a href="#features">Fitur</a>
+    <a href="#usecase">Use Case</a>
+    <a href="#pricing">Paket</a>
+    <a href="https://www.auliasoft.com" target="_blank">auliasoft.com</a>
+  </div>
+  <div class="footer-copy">Copyright © 2026 PT AuliaSoft. All Rights Reserved.</div>
+</footer>
+
+<script>
+function toggleMenu() {
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+
+function switchPK(btn, panelId) {
+  document.querySelectorAll('.pk-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.pk-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(panelId).classList.add('active');
+}
+
+function switchMore(btn, panelId) {
+  document.querySelectorAll('.more-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.more-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(panelId).classList.add('active');
+}
+
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!wasOpen) item.classList.add('open');
+}
+
+function toggleFaq2(card) {
+  const body = card.querySelector('.faq2-body');
+  const span = card.querySelector('span');
+  if (body.style.display === 'none') {
+    body.style.display = 'block';
+    span.textContent = '−';
+  } else {
+    body.style.display = 'none';
+    span.textContent = '+';
+  }
+}
+
+function sendWA() {
+  const name = document.querySelector('.form-input').value;
+  const msg = encodeURIComponent('Halo AuliaSoft, saya ' + (name || 'calon pelanggan') + ' ingin bertanya tentang E-POS AULIASOFT.');
+  window.open('https://wa.me/6281241945881?text=' + msg, '_blank');
+}
+
+// Smooth scroll for nav links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+</script>
+</body>
+</html>
